@@ -826,67 +826,112 @@
     </div>
 
 
-    <!-- Ecosystem / Products Section -->
-    <div class="flex justify-center pt-40 pb-20">
+    <!-- Ecosystem / Products Section - Stacked Showcase Frames -->
+    <div class="flex justify-center pt-40 pb-20" id="showcase-section">
         <div class="container relative md:px-0 px-5">
-            <h4 class="font-mono text-xs uppercase tracking-widest opacity-70 mb-4 font-light">
-                <div class="inline-block whitespace-pre-wrap tracking-tight">
-                    <span class="inline" style="color:inherit"></span>
-                    <span class="ml-1 inline-block opacity-100">_</span>
-                </div>
+            <h4 class="font-mono text-xs uppercase tracking-widest opacity-70 mb-4 font-light scroll-reveal-label" style="font-family: 'Geist Mono', monospace;" data-type-text="{ NestJS ecosystem products }" data-type-speed="30">
+                <span class="typewriter-text inline-block whitespace-pre-wrap"></span><span class="blink-underscore ml-1">_</span>
             </h4>
-            <h2 class="font-medium md:text-5xl sm:text-3xl text-4xl mb-16 md:leading-14 sm:leading-10 leading-12 text-center">
-                <span class="inline-block word">NestJS</span>
-                <span class="inline-block word">ecosystem</span>
-                <span class="inline-block word">products</span>
-            </h2>
-            <div class="grid lg:grid-cols-3 gap-8 md:gap-12">
-                <!-- Observe -->
-                <div class="_card_111p4_1 relative overflow-hidden" style="aspect-ratio: 16/10;">
-                    <div class="flex w-full h-full card-reveal" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;">
-                        <div class="_borderGlow_111p4_60 flex w-full h-full rounded-[24px]">
-                            <div class="_cardContainer_111p4_4 flex relative w-full h-full rounded-[24px] overflow-hidden">
-                                <div class="absolute inset-0 pointer-events-none"></div>
-                                <img src="assets/images/observe_1-Cp8b2ttb.png" alt="NestJS Observe" class="w-full h-full object-cover"/>
-                                <div class="absolute inset-0 bg-gradient-to-t from-[#050303] via-transparent to-transparent z-10"></div>
-                                <div class="absolute bottom-0 left-0 right-0 p-8 z-20 text-white _cardContent_111p4_8">
-                                    <h3 class="text-2xl font-semibold mb-2">Observe</h3>
-                                    <p class="opacity-80 text-base font-mono leading-6 font-light max-w-md">Real-time observability for NestJS applications. Monitor performance, debug issues, and optimize your backend.</p>
-                                    <a href="https://observe.nestjs.com" class="inline-flex items-center mt-4 text-sm font-medium text-white hover:underline">Learn more →</a>
+            <div class="space-y-20" id="showcase-frames">
+                <!-- Observe Showcase Frame -->
+                <div class="showcase-frame relative overflow-hidden rounded-[32px] border border-[#2a2a2a] bg-[#0a0a0a] scroll-reveal-block" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; max-width: 1520px; margin: 0 auto;">
+                    <!-- Bezel-framed app screenshot -->
+                    <div class="relative aspect-[16/9] overflow-hidden">
+                        <div class="absolute inset-0 border-4 border-[#181818] pointer-events-none" style="border-radius: 28px; inset: -4px;"></div>
+                        <img src="assets/images/observe_1-Cp8b2ttb.png" alt="NestJS Observe" class="w-full h-full object-cover"/>
+                    </div>
+                    <!-- Title and subline -->
+                    <div class="p-10 lg:p-16">
+                        <h3 class="font-medium text-[60px] leading-[1.1] font-manrope mb-4" style="font-weight: 500; font-family: 'Manrope', sans-serif;">Observe</h3>
+                        <p class="font-mono text-[14px] font-light leading-[1.4] opacity-70 max-w-2xl" style="font-weight: 300; font-family: 'Geist Mono', monospace;">Real-time observability for NestJS applications. Monitor performance, debug issues, and optimize your backend.</p>
+                    </div>
+                    <!-- Graphite Slab tab strip -->
+                    <div class="absolute bottom-0 left-0 right-0 bg-[#181818] px-10 lg:px-16 py-8">
+                        <div class="flex items-end justify-between gap-8">
+                            <div class="tab-item flex flex-col items-start" data-tab="metrics">
+                                <span class="tab-title font-medium text-[22px] text-white" style="font-weight: 500;">Metrics</span>
+                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
+                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                            <div class="tab-item flex flex-col items-start" data-tab="traces">
+                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Traces</span>
+                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
+                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 45%;"></div>
+                                </div>
+                            </div>
+                            <div class="tab-item flex flex-col items-start" data-tab="logs">
+                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Logs</span>
+                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
+                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 30%;"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Devtools -->
-                <div class="_card_111p4_1 relative overflow-hidden" style="aspect-ratio: 16/10;">
-                    <div class="flex w-full h-full card-reveal" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;">
-                        <div class="_borderGlow_111p4_60 flex w-full h-full rounded-[24px]">
-                            <div class="_cardContainer_111p4_4 flex relative w-full h-full rounded-[24px] overflow-hidden">
-                                <div class="absolute inset-0 pointer-events-none"></div>
-                                <img src="assets/images/devtools_1-DM6qFq1q.png" alt="NestJS Devtools" class="w-full h-full object-cover"/>
-                                <div class="absolute inset-0 bg-gradient-to-t from-[#050303] via-transparent to-transparent z-10"></div>
-                                <div class="absolute bottom-0 left-0 right-0 p-8 z-20 text-white _cardContent_111p4_8">
-                                    <h3 class="text-2xl font-semibold mb-2">Devtools</h3>
-                                    <p class="opacity-80 text-base font-mono leading-6 font-light max-w-md">Browser extension for debugging NestJS applications. Inspect modules, providers, and dependency graphs.</p>
-                                    <a href="https://devtools.nestjs.com" class="inline-flex items-center mt-4 text-sm font-medium text-white hover:underline">Learn more →</a>
+
+                <!-- Devtools Showcase Frame -->
+                <div class="showcase-frame relative overflow-hidden rounded-[32px] border border-[#2a2a2a] bg-[#0a0a0a] scroll-reveal-block" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; max-width: 1520px; margin: 0 auto;">
+                    <div class="relative aspect-[16/9] overflow-hidden">
+                        <div class="absolute inset-0 border-4 border-[#181818] pointer-events-none" style="border-radius: 28px; inset: -4px;"></div>
+                        <img src="assets/images/devtools_1-DM6qFq1q.png" alt="NestJS Devtools" class="w-full h-full object-cover"/>
+                    </div>
+                    <div class="p-10 lg:p-16">
+                        <h3 class="font-medium text-[60px] leading-[1.1] font-manrope mb-4" style="font-weight: 500; font-family: 'Manrope', sans-serif;">Devtools</h3>
+                        <p class="font-mono text-[14px] font-light leading-[1.4] opacity-70 max-w-2xl" style="font-weight: 300; font-family: 'Geist Mono', monospace;">Browser extension for debugging NestJS applications. Inspect modules, providers, and dependency graphs.</p>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 bg-[#181818] px-10 lg:px-16 py-8">
+                        <div class="flex items-end justify-between gap-8">
+                            <div class="tab-item flex flex-col items-start" data-tab="modules">
+                                <span class="tab-title font-medium text-[22px] text-white" style="font-weight: 500;">Modules</span>
+                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
+                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                            <div class="tab-item flex flex-col items-start" data-tab="providers">
+                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Providers</span>
+                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
+                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 60%;"></div>
+                                </div>
+                            </div>
+                            <div class="tab-item flex flex-col items-start" data-tab="graph">
+                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Graph</span>
+                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
+                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 40%;"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Mau -->
-                <div class="_card_111p4_1 relative overflow-hidden" style="aspect-ratio: 16/10;">
-                    <div class="flex w-full h-full card-reveal" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;">
-                        <div class="_borderGlow_111p4_60 flex w-full h-full rounded-[24px]">
-                            <div class="_cardContainer_111p4_4 flex relative w-full h-full rounded-[24px] overflow-hidden">
-                                <div class="absolute inset-0 pointer-events-none"></div>
-                                <img src="assets/images/mau_2-VkyfjmLo.png" alt="NestJS Mau" class="w-full h-full object-cover"/>
-                                <div class="absolute inset-0 bg-gradient-to-t from-[#050303] via-transparent to-transparent z-10"></div>
-                                <div class="absolute bottom-0 left-0 right-0 p-8 z-20 text-white _cardContent_111p4_8">
-                                    <h3 class="text-2xl font-semibold mb-2">Mau</h3>
-                                    <p class="opacity-80 text-base font-mono leading-6 font-light max-w-md">Zero-config deployment platform for NestJS. Deploy to the cloud with a single command.</p>
-                                    <a href="https://mau.nestjs.com" class="inline-flex items-center mt-4 text-sm font-medium text-white hover:underline">Learn more →</a>
+
+                <!-- Mau Showcase Frame -->
+                <div class="showcase-frame relative overflow-hidden rounded-[32px] border border-[#2a2a2a] bg-[#0a0a0a] scroll-reveal-block" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; max-width: 1520px; margin: 0 auto;">
+                    <div class="relative aspect-[16/9] overflow-hidden">
+                        <div class="absolute inset-0 border-4 border-[#181818] pointer-events-none" style="border-radius: 28px; inset: -4px;"></div>
+                        <img src="assets/images/mau_2-VkyfjmLo.png" alt="NestJS Mau" class="w-full h-full object-cover"/>
+                    </div>
+                    <div class="p-10 lg:p-16">
+                        <h3 class="font-medium text-[60px] leading-[1.1] font-manrope mb-4" style="font-weight: 500; font-family: 'Manrope', sans-serif;">Mau</h3>
+                        <p class="font-mono text-[14px] font-light leading-[1.4] opacity-70 max-w-2xl" style="font-weight: 300; font-family: 'Geist Mono', monospace;">Zero-config deployment platform for NestJS. Deploy to the cloud with a single command.</p>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 bg-[#181818] px-10 lg:px-16 py-8">
+                        <div class="flex items-end justify-between gap-8">
+                            <div class="tab-item flex flex-col items-start" data-tab="deploy">
+                                <span class="tab-title font-medium text-[22px] text-white" style="font-weight: 500;">Deploy</span>
+                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
+                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="tab-item flex flex-col items-start" data-tab="scale">
+                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Scale</span>
+                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
+                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 55%;"></div>
+                                </div>
+                            </div>
+                            <div class="tab-item flex flex-col items-start" data-tab="monitor">
+                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Monitor</span>
+                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
+                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 35%;"></div>
                                 </div>
                             </div>
                         </div>
