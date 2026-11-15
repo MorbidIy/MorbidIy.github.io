@@ -394,6 +394,217 @@
             display: inline-block;
             color: rgb(55, 53, 53); /* grey start state, sampled from nestjs.com */
         }
+
+        /* ---- Product showcase frames: Observe, Devtools, Deploy ---- */
+        /* Same inset as the hero (header p-10): 40px from every viewport edge. */
+        .showcase-stack {
+            padding: 0 40px 40px;
+        }
+        .showcase-frame {
+            position: sticky;
+            top: 40px;
+            height: calc(100vh - 80px);
+            min-height: 560px;
+            margin-bottom: 40px;
+            border-radius: 32px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            isolation: isolate;
+            background: #141414;
+        }
+        .showcase-frame:last-child { margin-bottom: 0; }
+        /* Light, never flat fills: base wash + right-hand haze + white radial glow behind the bezel */
+        .showcase-frame::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+        }
+        .showcase-observe::before {
+            background:
+                radial-gradient(ellipse 22% 38% at 50% 30%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 100%),
+                radial-gradient(ellipse 45% 60% at 100% 62%, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0) 100%),
+                radial-gradient(ellipse 30% 50% at 0% 60%, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0) 100%),
+                #141414;
+        }
+        .showcase-devtools::before {
+            background:
+                radial-gradient(ellipse 22% 38% at 50% 30%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 100%),
+                radial-gradient(ellipse 45% 60% at 100% 62%, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0) 100%),
+                linear-gradient(100deg, #871223 0%, #9a1f35 40%, #a63545 100%);
+        }
+        .showcase-deploy::before {
+            background:
+                radial-gradient(ellipse 22% 38% at 50% 30%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 100%),
+                radial-gradient(ellipse 45% 60% at 100% 62%, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 100%),
+                linear-gradient(180deg, #464646 0%, #686868 55%, #787878 100%);
+        }
+        /* Film grain over the colour, under the content */
+        .showcase-frame::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 5 0 0 0 -3'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px 256px;
+            opacity: 0.1;
+        }
+        .showcase-main {
+            position: relative;
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow: hidden;
+            padding-top: 54px;
+            text-align: center;
+        }
+        .showcase-title {
+            font-size: 60px;
+            line-height: 66px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+        .showcase-sub {
+            margin: 20px auto 0;
+            max-width: 1280px;
+            padding: 0 24px;
+            font-size: 14px;
+            line-height: 24px;
+            font-weight: 300;
+            color: #fff;
+        }
+        /* Frosted bezel with 12px-rounded inner screenshot; the tab strip clips its bottom edge */
+        .showcase-bezel {
+            width: 83%;
+            margin: 32px auto 0;
+            padding: 24px 24px 0;
+            border-radius: 28px 28px 0 0;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 0;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 -10px 60px rgba(255, 255, 255, 0.1);
+        }
+        .showcase-shots { position: relative; }
+        .showcase-shots img.showcase-shot-alt {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; object-position: top;
+            opacity: 0; transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .showcase-shots img.showcase-shot-alt.is-on { opacity: 1; }
+        /* Receding frame: JS drives transform/filter as the next frame slides over it */
+        .showcase-frame { transform-origin: 50% 0; will-change: transform; }
+        .showcase-bezel img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 12px 12px 0 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 0;
+            background: #0b0b0b;
+        }
+        .showcase-tabs {
+            position: relative;
+            flex: 0 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 64px;
+            padding: 40px 48px 8px;
+            background: #181818;
+        }
+        .showcase-tab {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            background: none;
+            border: 0;
+            padding: 0;
+            cursor: pointer;
+            color: #fff;
+            font: inherit;
+        }
+        .showcase-tab-title,
+        .showcase-tab-desc {
+            display: block;
+            transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #535353; /* inactive: fades to Pewter-grey */
+        }
+        .showcase-tab:hover .showcase-tab-title,
+        .showcase-tab:hover .showcase-tab-desc { color: #7a7979; }
+        .showcase-tab.is-active .showcase-tab-title,
+        .showcase-tab.is-active .showcase-tab-desc { color: #fff; }
+        .showcase-tab-title {
+            font-size: 22px;
+            line-height: 28px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+        .showcase-tab-desc {
+            margin-top: 14px;
+            font-size: 14px;
+            line-height: 24px;
+            font-weight: 300;
+        }
+        .showcase-progress {
+            display: block;
+            height: 2px;
+            margin-top: auto;
+            padding-top: 0;
+            border-radius: 4px;
+            background: #303030;
+            overflow: hidden;
+            position: relative;
+            top: 0;
+        }
+        .showcase-tab-desc + .showcase-progress { margin-top: 8px; }
+        .showcase-progress-fill {
+            display: block;
+            height: 100%;
+            width: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), #fff);
+            transform-origin: left center;
+            transform: scaleX(0);
+        }
+        .showcase-desc-m { display: none; }
+        .showcase-sr-link {
+            position: absolute;
+            width: 1px; height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+        }
+        @media (max-width: 1023px) {
+            .showcase-tabs { gap: 32px; padding: 32px 32px 8px; }
+            .showcase-bezel { width: 90%; }
+        }
+        @media (max-width: 767px) {
+            .showcase-stack { padding: 0 16px 16px; }
+            .showcase-frame { top: 16px; height: calc(100vh - 32px); border-radius: 16px; margin-bottom: 16px; min-height: 520px; }
+            .showcase-main { padding-top: 36px; }
+            .showcase-title { font-size: 36px; line-height: 40px; }
+            .showcase-sub { margin-top: 12px; padding: 0 16px; font-size: 12px; line-height: 20px; }
+            .showcase-bezel { width: calc(100% - 32px); margin-top: 24px; padding: 10px 10px 0; border-radius: 16px 16px 0 0; }
+            .showcase-bezel img { border-radius: 8px 8px 0 0; }
+            .showcase-tabs { grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px 16px 16px; }
+            .showcase-tab-title { font-size: 13px; line-height: 18px; }
+            .showcase-tab-desc { display: none; }
+            .showcase-tab-title + .showcase-progress { margin-top: 10px; }
+            .showcase-desc-m {
+                display: block;
+                grid-column: 1 / -1;
+                order: 5;
+                min-height: 60px;
+                font-size: 12px;
+                line-height: 20px;
+                font-weight: 300;
+                color: #fff;
+            }
+        }
     </style>
 </head>
 <body class="w-full overflow-x-clip">
@@ -826,120 +1037,95 @@
     </div>
 
 
-    <!-- Ecosystem / Products Section - Stacked Showcase Frames -->
-    <div class="flex justify-center pt-40 pb-20" id="showcase-section">
-        <div class="container relative md:px-0 px-5">
-            <h4 class="font-mono text-xs uppercase tracking-widest opacity-70 mb-4 font-light scroll-reveal-label" style="font-family: 'Geist Mono', monospace;" data-type-text="{ NestJS ecosystem products }" data-type-speed="30">
-                <span class="typewriter-text inline-block whitespace-pre-wrap"></span><span class="blink-underscore ml-1">_</span>
-            </h4>
-            <div class="space-y-20" id="showcase-frames">
-                <!-- Observe Showcase Frame -->
-                <div class="showcase-frame relative overflow-hidden rounded-[32px] border border-[#2a2a2a] bg-[#0a0a0a] scroll-reveal-block" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; max-width: 1520px; margin: 0 auto;">
-                    <!-- Bezel-framed app screenshot -->
-                    <div class="relative aspect-[16/9] overflow-hidden">
-                        <div class="absolute inset-0 border-4 border-[#181818] pointer-events-none" style="border-radius: 28px; inset: -4px;"></div>
-                        <img src="assets/images/observe_1-Cp8b2ttb.png" alt="NestJS Observe" class="w-full h-full object-cover"/>
-                    </div>
-                    <!-- Title and subline -->
-                    <div class="p-10 lg:p-16">
-                        <h3 class="font-medium text-[60px] leading-[1.1] font-manrope mb-4" style="font-weight: 500; font-family: 'Manrope', sans-serif;">Observe</h3>
-                        <p class="font-mono text-[14px] font-light leading-[1.4] opacity-70 max-w-2xl" style="font-weight: 300; font-family: 'Geist Mono', monospace;">Real-time observability for NestJS applications. Monitor performance, debug issues, and optimize your backend.</p>
-                    </div>
-                    <!-- Graphite Slab tab strip -->
-                    <div class="absolute bottom-0 left-0 right-0 bg-[#181818] px-10 lg:px-16 py-8">
-                        <div class="flex items-end justify-between gap-8">
-                            <div class="tab-item flex flex-col items-start" data-tab="metrics">
-                                <span class="tab-title font-medium text-[22px] text-white" style="font-weight: 500;">Metrics</span>
-                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
-                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 75%;"></div>
-                                </div>
-                            </div>
-                            <div class="tab-item flex flex-col items-start" data-tab="traces">
-                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Traces</span>
-                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
-                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 45%;"></div>
-                                </div>
-                            </div>
-                            <div class="tab-item flex flex-col items-start" data-tab="logs">
-                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Logs</span>
-                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
-                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 30%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Devtools Showcase Frame -->
-                <div class="showcase-frame relative overflow-hidden rounded-[32px] border border-[#2a2a2a] bg-[#0a0a0a] scroll-reveal-block" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; max-width: 1520px; margin: 0 auto;">
-                    <div class="relative aspect-[16/9] overflow-hidden">
-                        <div class="absolute inset-0 border-4 border-[#181818] pointer-events-none" style="border-radius: 28px; inset: -4px;"></div>
-                        <img src="assets/images/devtools_1-DM6qFq1q.png" alt="NestJS Devtools" class="w-full h-full object-cover"/>
-                    </div>
-                    <div class="p-10 lg:p-16">
-                        <h3 class="font-medium text-[60px] leading-[1.1] font-manrope mb-4" style="font-weight: 500; font-family: 'Manrope', sans-serif;">Devtools</h3>
-                        <p class="font-mono text-[14px] font-light leading-[1.4] opacity-70 max-w-2xl" style="font-weight: 300; font-family: 'Geist Mono', monospace;">Browser extension for debugging NestJS applications. Inspect modules, providers, and dependency graphs.</p>
-                    </div>
-                    <div class="absolute bottom-0 left-0 right-0 bg-[#181818] px-10 lg:px-16 py-8">
-                        <div class="flex items-end justify-between gap-8">
-                            <div class="tab-item flex flex-col items-start" data-tab="modules">
-                                <span class="tab-title font-medium text-[22px] text-white" style="font-weight: 500;">Modules</span>
-                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
-                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 80%;"></div>
-                                </div>
-                            </div>
-                            <div class="tab-item flex flex-col items-start" data-tab="providers">
-                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Providers</span>
-                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
-                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 60%;"></div>
-                                </div>
-                            </div>
-                            <div class="tab-item flex flex-col items-start" data-tab="graph">
-                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Graph</span>
-                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
-                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 40%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mau Showcase Frame -->
-                <div class="showcase-frame relative overflow-hidden rounded-[32px] border border-[#2a2a2a] bg-[#0a0a0a] scroll-reveal-block" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; max-width: 1520px; margin: 0 auto;">
-                    <div class="relative aspect-[16/9] overflow-hidden">
-                        <div class="absolute inset-0 border-4 border-[#181818] pointer-events-none" style="border-radius: 28px; inset: -4px;"></div>
-                        <img src="assets/images/mau_2-VkyfjmLo.png" alt="NestJS Mau" class="w-full h-full object-cover"/>
-                    </div>
-                    <div class="p-10 lg:p-16">
-                        <h3 class="font-medium text-[60px] leading-[1.1] font-manrope mb-4" style="font-weight: 500; font-family: 'Manrope', sans-serif;">Mau</h3>
-                        <p class="font-mono text-[14px] font-light leading-[1.4] opacity-70 max-w-2xl" style="font-weight: 300; font-family: 'Geist Mono', monospace;">Zero-config deployment platform for NestJS. Deploy to the cloud with a single command.</p>
-                    </div>
-                    <div class="absolute bottom-0 left-0 right-0 bg-[#181818] px-10 lg:px-16 py-8">
-                        <div class="flex items-end justify-between gap-8">
-                            <div class="tab-item flex flex-col items-start" data-tab="deploy">
-                                <span class="tab-title font-medium text-[22px] text-white" style="font-weight: 500;">Deploy</span>
-                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
-                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 90%;"></div>
-                                </div>
-                            </div>
-                            <div class="tab-item flex flex-col items-start" data-tab="scale">
-                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Scale</span>
-                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
-                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 55%;"></div>
-                                </div>
-                            </div>
-                            <div class="tab-item flex flex-col items-start" data-tab="monitor">
-                                <span class="tab-title font-medium text-[22px] text-[#8b8a8a]" style="font-weight: 500;">Monitor</span>
-                                <div class="tab-progress mt-2 w-full h-[4px] bg-[#3a3a3a] rounded-[4px] overflow-hidden">
-                                    <div class="tab-progress-fill h-full bg-[#ea2845] rounded-[4px] transition-all duration-500" style="width: 35%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Ecosystem / Products Section: three stacked showcase frames (Observe, Devtools, Deploy).
+         Same inset as the hero (40px from every viewport edge, 16px on phones). Each frame is sticky,
+         so the next one slides over it. Tabs auto-advance with a progress line (initShowcaseFrames). -->
+    <section id="showcase" class="showcase-stack">
+        <article id="showcase-observe" class="showcase-frame showcase-observe" data-shots="assets/images/observe_1-Cp8b2ttb.png,assets/images/showcase/observe-2.png,assets/images/showcase/observe-3.png">
+            <div class="showcase-main">
+                <h3 class="showcase-title">Observe</h3>
+                <p class="showcase-sub font-mono">Zero-Config Auto-Instrumented Observability for your NestJS applications.</p>
+                <div class="showcase-bezel">
+                    <div class="showcase-shots"><img src="assets/images/observe_1-Cp8b2ttb.png" width="3456" height="1702" alt="NestJS Observe dashboard" decoding="async"/></div>
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="showcase-tabs">
+                <button type="button" class="showcase-tab is-active" data-tab="0" aria-pressed="true">
+                    <span class="showcase-tab-title">Auto-instrumented observability</span>
+                    <span class="showcase-tab-desc font-mono">Get real-time insights into your application&#39;s performance, requests, jobs, spans, everything, without any manual instrumentation.</span>
+                    <span class="showcase-progress"><span class="showcase-progress-fill"></span></span>
+                </button>
+                <button type="button" class="showcase-tab" data-tab="1" aria-pressed="false">
+                    <span class="showcase-tab-title">Error monitoring</span>
+                    <span class="showcase-tab-desc font-mono">Detect, triage, and resolve errors faster with detailed error reports and stack traces.</span>
+                    <span class="showcase-progress"><span class="showcase-progress-fill"></span></span>
+                </button>
+                <button type="button" class="showcase-tab" data-tab="2" aria-pressed="false">
+                    <span class="showcase-tab-title">Streamlined logs</span>
+                    <span class="showcase-tab-desc font-mono">Centralize and analyze your logs in real-time, making it easier to identify issues and optimize performance.</span>
+                    <span class="showcase-progress"><span class="showcase-progress-fill"></span></span>
+                </button>
+                <p class="showcase-desc-m font-mono" aria-live="polite"></p>
+            </div>
+            <a href="https://observe.nestjs.com" class="showcase-sr-link" aria-label="Open Observe">Learn more</a>
+        </article>
+        <article id="showcase-devtools" class="showcase-frame showcase-devtools" data-shots="assets/images/devtools_1-DM6qFq1q.png,assets/images/showcase/devtools-2.png,assets/images/showcase/devtools-3.png">
+            <div class="showcase-main">
+                <h3 class="showcase-title">Devtools</h3>
+                <p class="showcase-sub font-mono">Enhance your development workflow with powerful tools designed to streamline your Nest application development.</p>
+                <div class="showcase-bezel">
+                    <div class="showcase-shots"><img src="assets/images/devtools_1-DM6qFq1q.png" width="3446" height="1688" alt="NestJS Devtools interactive dependency graph" loading="lazy" decoding="async"/></div>
+                </div>
+            </div>
+            <div class="showcase-tabs">
+                <button type="button" class="showcase-tab is-active" data-tab="0" aria-pressed="true">
+                    <span class="showcase-tab-title">Explore your graph</span>
+                    <span class="showcase-tab-desc font-mono">Visualize your application&#39;s architecture and dependencies with an interactive graph.</span>
+                    <span class="showcase-progress"><span class="showcase-progress-fill"></span></span>
+                </button>
+                <button type="button" class="showcase-tab" data-tab="1" aria-pressed="false">
+                    <span class="showcase-tab-title">Code playground</span>
+                    <span class="showcase-tab-desc font-mono">Experiment with your code in a safe, sandboxed environment without affecting your main codebase.</span>
+                    <span class="showcase-progress"><span class="showcase-progress-fill"></span></span>
+                </button>
+                <button type="button" class="showcase-tab" data-tab="2" aria-pressed="false">
+                    <span class="showcase-tab-title">CI/CD integration</span>
+                    <span class="showcase-tab-desc font-mono">Seamlessly integrate with your CI/CD pipeline to detect issues early.</span>
+                    <span class="showcase-progress"><span class="showcase-progress-fill"></span></span>
+                </button>
+                <p class="showcase-desc-m font-mono" aria-live="polite"></p>
+            </div>
+            <a href="https://devtools.nestjs.com" class="showcase-sr-link" aria-label="Open Devtools">Learn more</a>
+        </article>
+        <article id="showcase-deploy" class="showcase-frame showcase-deploy" data-shots="assets/images/mau_2-VkyfjmLo.png,assets/images/showcase/deploy-2.png,assets/images/showcase/deploy-3.png">
+            <div class="showcase-main">
+                <h3 class="showcase-title">Deploy, mau!</h3>
+                <p class="showcase-sub font-mono">Provision and manage your infrastructure on AWS without the hassle and extra DevOps work.</p>
+                <div class="showcase-bezel">
+                    <div class="showcase-shots"><img src="assets/images/mau_2-VkyfjmLo.png" width="3444" height="1682" alt="NestJS deployment dashboard" loading="lazy" decoding="async"/></div>
+                </div>
+            </div>
+            <div class="showcase-tabs">
+                <button type="button" class="showcase-tab is-active" data-tab="0" aria-pressed="true">
+                    <span class="showcase-tab-title">One-click deployment</span>
+                    <span class="showcase-tab-desc font-mono">Deploy your Nest application to AWS with a single command and let us handle the rest.</span>
+                    <span class="showcase-progress"><span class="showcase-progress-fill"></span></span>
+                </button>
+                <button type="button" class="showcase-tab" data-tab="1" aria-pressed="false">
+                    <span class="showcase-tab-title">Stream your logs</span>
+                    <span class="showcase-tab-desc font-mono">Get real-time visibility into log data, detect anomalies immediately, and respond swiftly.</span>
+                    <span class="showcase-progress"><span class="showcase-progress-fill"></span></span>
+                </button>
+                <button type="button" class="showcase-tab" data-tab="2" aria-pressed="false">
+                    <span class="showcase-tab-title">Track your metrics</span>
+                    <span class="showcase-tab-desc font-mono">Monitor key performance indicators to ensure optimal application performance.</span>
+                    <span class="showcase-progress"><span class="showcase-progress-fill"></span></span>
+                </button>
+                <p class="showcase-desc-m font-mono" aria-live="polite"></p>
+            </div>
+            <a href="https://mau.nestjs.com" class="showcase-sr-link" aria-label="Open Deploy, mau!">Learn more</a>
+        </article>
+    </section>
 
     <!-- Value Proposition Section (Clone) - Visible immediately -->
     <div class="flex justify-center mt-40 pb-20" id="value-prop-section-clone">
@@ -1945,6 +2131,113 @@
             }, { threshold: 0 }).observe(canvas);
         }
 
+        // Showcase frames: each frame's three tabs auto-advance while the frame is on screen.
+        // The active tab's progress line fills over TAB_MS, then the next tab takes over.
+        // Clicking a tab jumps to it and restarts its line.
+        function initShowcaseFrames() {
+            const frames = Array.from(document.querySelectorAll('#showcase .showcase-frame'));
+            if (!frames.length) return;
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const TAB_MS = 6000;
+            const mobile = window.matchMedia('(max-width: 767px)');
+
+            const states = frames.map(frame => {
+                const tabs = Array.from(frame.querySelectorAll('.showcase-tab'));
+                return {
+                    frame, tabs,
+                    fills: tabs.map(t => t.querySelector('.showcase-progress-fill')),
+                    mobileDesc: frame.querySelector('.showcase-desc-m'),
+                    active: 0, started: 0, visible: false
+                };
+            });
+
+            // Per-tab screenshots: extra images (data-shots) crossfade over the base image.
+            // A missing file falls back to the base image so nothing ever goes blank.
+            states.forEach(st => {
+                const wrap = st.frame.querySelector('.showcase-shots');
+                const base = wrap && wrap.querySelector('img');
+                const list = (st.frame.dataset.shots || '').split(',').filter(Boolean);
+                st.shots = [null, null, null];
+                if (!base) return;
+                list.forEach((src, i) => {
+                    if (i === 0 || src === base.getAttribute('src')) return;
+                    const im = new Image();
+                    im.className = 'showcase-shot-alt';
+                    im.alt = base.alt; im.decoding = 'async';
+                    im.onload = () => { wrap.appendChild(im); st.shots[i] = im; if (st.active === i) im.classList.add('is-on'); };
+                    im.src = src;
+                });
+            });
+
+            function setActive(st, idx, now) {
+                st.active = idx;
+                if (st.shots) st.shots.forEach((im, i) => { if (im) im.classList.toggle('is-on', i === idx); });
+                st.started = now;
+                st.tabs.forEach((tab, i) => {
+                    tab.classList.toggle('is-active', i === idx);
+                    tab.setAttribute('aria-pressed', i === idx ? 'true' : 'false');
+                    if (i !== idx) st.fills[i].style.transform = 'scaleX(0)';
+                });
+                if (st.mobileDesc) {
+                    st.mobileDesc.textContent = st.tabs[idx].querySelector('.showcase-tab-desc').textContent;
+                }
+                st.fills[idx].style.transform = reduced ? 'scaleX(1)' : 'scaleX(0)';
+            }
+
+            states.forEach(st => {
+                setActive(st, 0, performance.now());
+                st.tabs.forEach((tab, i) => {
+                    tab.addEventListener('click', () => setActive(st, i, performance.now()));
+                });
+            });
+
+            // Only run the timer for frames that are actually on screen
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver(entries => {
+                    entries.forEach(e => {
+                        const st = states.find(s => s.frame === e.target);
+                        const was = st.visible;
+                        st.visible = e.intersectionRatio > 0.5;
+                        if (st.visible && !was) st.started = performance.now() - (st.pausedAt || 0);
+                        if (!st.visible && was) st.pausedAt = performance.now() - st.started;
+                    });
+                }, { threshold: [0, 0.5, 1] });
+                states.forEach(st => io.observe(st.frame));
+            } else {
+                states.forEach(st => { st.visible = true; });
+            }
+
+            // The frame underneath tilts back and shrinks while the next one slides up over it.
+            function recede() {
+                const vh = window.innerHeight, top = 40;
+                states.forEach((st, i) => {
+                    const next = states[i + 1];
+                    if (!next || reduced || mobile.matches) { st.frame.style.transform = ''; st.frame.style.filter = ''; return; }
+                    const nt = next.frame.getBoundingClientRect().top;
+                    const p = Math.max(0, Math.min(1, 1 - (nt - top) / (vh - top)));
+                    st.frame.style.transform = p ? `perspective(1600px) translateY(${(-p * 24).toFixed(1)}px) rotateX(${(p * 14).toFixed(2)}deg) scale(${(1 - p * 0.1).toFixed(4)})` : '';
+                    st.frame.style.filter = p ? `brightness(${(1 - p * 0.45).toFixed(3)})` : '';
+                });
+            }
+            let rq = 0;
+            window.addEventListener('scroll', () => { if (!rq) rq = requestAnimationFrame(() => { rq = 0; recede(); }); }, { passive: true });
+            window.addEventListener('resize', recede);
+            recede();
+
+            function tick(now) {
+                if (!reduced) {
+                    states.forEach(st => {
+                        if (!st.visible) return;
+                        const p = Math.min(1, (now - st.started) / TAB_MS);
+                        st.fills[st.active].style.transform = `scaleX(${p.toFixed(4)})`;
+                        if (p >= 1) setActive(st, (st.active + 1) % st.tabs.length, now);
+                    });
+                }
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+
         // Generic hover fade effect for sibling elements
         function initHoverFade(selector, fadeOpacity = 0.6, enterDuration = 0.4, leaveDuration = 0.5) {
             const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1983,6 +2276,7 @@
             initCardsBounce();
             initStatementReveal();
             initStarfield();
+            initShowcaseFrames();
             initHoverFade('#logo-wall .logo-item', 0.6, 0.4, 0.5);
             initHoverFade('#desktop-nav .menu-item', 0.6, 0.3, 0.4);
         });
