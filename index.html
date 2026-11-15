@@ -1714,11 +1714,29 @@
                     const wt = reduced ? 1 : clamp((t - 0.1) / 0.7);
                     const trail = 2.5; // how many words are mid-transition at once
                     const focus = wt * (words.length + trail);
+
+                    // For the last panel, words highlight then fade back to grey after paragraph appears
+                    // Paragraph appears at t ≈ 0.92 (wt ≈ 1.0), then words un-highlight as t goes 0.92 → 1.0
+                    const isLastPanel = i === n - 1;
+                    const unhighlightStart = 0.92; // t value where paragraph is fully visible
+                    const unhighlightProgress = isLastPanel && !reduced ? clamp((t - unhighlightStart) / (1 - unhighlightStart)) : 0;
+
                     words.forEach((word, idx) => {
-                        const lp = reduced ? 1 : smooth(clamp((focus - idx) / trail));
-                        const r = Math.round(GREY[0] + (WHITE[0] - GREY[0]) * lp);
-                        const g = Math.round(GREY[1] + (WHITE[1] - GREY[1]) * lp);
-                        const b = Math.round(GREY[2] + (WHITE[2] - GREY[2]) * lp);
+                        // First phase: highlight (grey -> white) as wt goes 0 -> 1
+                        const highlightLp = reduced ? 1 : smooth(clamp((focus - idx) / trail));
+
+                        let finalLp;
+                        if (isLastPanel && unhighlightProgress > 0) {
+                            // Second phase: un-highlight (white -> grey) as unhighlightProgress goes 0 -> 1
+                            // We reverse the highlight progress
+                            finalLp = highlightLp * (1 - unhighlightProgress);
+                        } else {
+                            finalLp = highlightLp;
+                        }
+
+                        const r = Math.round(GREY[0] + (WHITE[0] - GREY[0]) * finalLp);
+                        const g = Math.round(GREY[1] + (WHITE[1] - GREY[1]) * finalLp);
+                        const b = Math.round(GREY[2] + (WHITE[2] - GREY[2]) * finalLp);
                         word.style.color = `rgb(${r}, ${g}, ${b})`;
                     });
 
