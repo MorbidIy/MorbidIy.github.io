@@ -517,7 +517,6 @@
             background: #181818;
         }
         .showcase-tab {
-            position: relative;
             display: flex;
             flex-direction: column;
             text-align: left;
@@ -549,17 +548,19 @@
             font-size: 14px;
             line-height: 24px;
             font-weight: 300;
+        }
         .showcase-progress {
-            position: absolute;
-            bottom: 8px;
-            left: 0;
-            right: 0;
+            display: block;
             height: 2px;
+            margin-top: auto;
+            padding-top: 0;
             border-radius: 4px;
             background: #303030;
             overflow: hidden;
+            position: relative;
+            top: 0;
         }
-        .showcase-tab-desc + .showcase-progress { margin-top: 0; }
+        .showcase-tab-desc + .showcase-progress { margin-top: 8px; }
         .showcase-progress-fill {
             display: block;
             height: 100%;
@@ -592,7 +593,7 @@
             .showcase-tabs { grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px 16px 16px; }
             .showcase-tab-title { font-size: 13px; line-height: 18px; }
             .showcase-tab-desc { display: none; }
-            .showcase-tab-title + .showcase-progress { margin-top: 0; }
+            .showcase-tab-title + .showcase-progress { margin-top: 10px; }
             .showcase-desc-m {
                 display: block;
                 grid-column: 1 / -1;
