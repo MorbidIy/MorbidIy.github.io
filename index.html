@@ -1773,7 +1773,7 @@
             const ctx = canvas.getContext('2d');
             if (!ctx) return;
             const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const DENSITY = 6e-5; // stars per CSS pixel
+            const DENSITY = 1.2e-4; // stars per CSS pixel (doubled)
 
             let stars = [];
             let w = 0, h = 0, dpr = 1;
