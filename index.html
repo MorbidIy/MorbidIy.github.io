@@ -818,7 +818,7 @@
                     <div class="statement-inner text-center w-full">
                         <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium whitespace-nowrap">When there&apos;s no yarn</h4>
                         <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium whitespace-nowrap">we build our own toys</h4>
-                        <p class="mt-16 font-mono text-[12px] font-light leading-[34px] opacity-80 max-w-3xl mx-auto text-center">Explore our tools built to supercharge your Nest workflow. Discover<br>solutions we created to streamline development, automate tasks, and<br>help you ship faster with greater confidence.</p>
+                        <p id="statement-paragraph" class="mt-16 font-mono text-[12px] font-light leading-[34px] opacity-0 max-w-3xl mx-auto text-center">Explore our tools built to supercharge your Nest workflow. Discover<br>solutions we created to streamline development, automate tasks, and<br>help you ship faster with greater confidence.</p>
                     </div>
                 </div>
             </div>
@@ -1649,6 +1649,9 @@
             if (!panels.length) return;
             const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+            // Paragraph element to reveal after words are fully highlighted
+            const paragraph = document.getElementById('statement-paragraph');
+
             const GREY = [55, 53, 53];
             const WHITE = [255, 255, 255];
             const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
@@ -1718,6 +1721,18 @@
                         const b = Math.round(GREY[2] + (WHITE[2] - GREY[2]) * lp);
                         word.style.color = `rgb(${r}, ${g}, ${b})`;
                     });
+
+                    // Reveal paragraph after last panel's words are fully highlighted
+                    if (paragraph && i === n - 1) {
+                        // Paragraph appears after words reach 100% (wt = 1)
+                        // with a slight delay for visual polish
+                        const paraProgress = reduced ? 1 : clamp((wt - 0.95) / 0.05);
+                        if (paraProgress > 0) {
+                            paragraph.style.opacity = String(paraProgress);
+                            paragraph.style.transform = `translateY(${20 * (1 - paraProgress)}px)`;
+                            paragraph.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                        }
+                    }
                 });
             }
 
