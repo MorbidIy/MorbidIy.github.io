@@ -1765,19 +1765,25 @@
             update();
         }
 
-        // Twinkling starfield drawn on a canvas behind the statement.
+        // Orbital starfield drawn on a canvas behind the statement.
+        // Stars rotate in elliptical orbits on a tilted plane, creating a 3D galaxy effect.
         function initStarfield() {
             const canvas = document.getElementById('starfield');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             if (!ctx) return;
             const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const DENSITY = 7e-5; // stars per CSS pixel (~120 on a 1900x900 viewport)
+            const DENSITY = 6e-5; // stars per CSS pixel
 
             let stars = [];
             let w = 0, h = 0, dpr = 1;
             let visible = false;
             let raf = 0;
+            let cx = 0, cy = 0; // center of orbit
+
+            // Orbital plane tilt (radians) - creates the "tilted axis" look
+            const TILT = Math.PI / 6; // 30 degrees
+            const ORBIT_SPEED = 0.15; // base orbital speed (rad/s)
 
             function build() {
                 dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -1787,25 +1793,58 @@
                 canvas.width = Math.round(w * dpr);
                 canvas.height = Math.round(h * dpr);
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                cx = w / 2;
+                cy = h / 2;
                 const count = Math.round(w * h * DENSITY);
-                stars = Array.from({ length: count }, () => ({
-                    x: Math.random() * w,
-                    y: Math.random() * h,
-                    size: (() => { const q = Math.random(); return q < 0.45 ? 1 : q < 0.85 ? 2 : 3; })(), // crisp pixel stars, like nestjs.com
-                    base: 0.55 + Math.random() * 0.45,
-                    speed: 0.4 + Math.random() * 1.4,             // twinkle rate (rad/s)
-                    phase: Math.random() * Math.PI * 2
-                }));
+                stars = Array.from({ length: count }, () => {
+                    // Random orbital parameters
+                    const radius = 20 + Math.random() * Math.max(w, h) * 0.6; // distance from center
+                    const angle = Math.random() * Math.PI * 2; // starting angle
+                    const speed = ORBIT_SPEED * (0.3 + Math.random() * 1.2); // orbital speed variation
+                    const inclination = TILT * (0.7 + Math.random() * 0.6); // individual orbit tilt variation
+                    const phaseOffset = Math.random() * Math.PI * 2; // phase offset for elliptical orbits
+                    const eccentricity = 0.15 + Math.random() * 0.25; // orbit elliptical shape
+                    return {
+                        radius,
+                        angle,
+                        speed,
+                        inclination,
+                        phaseOffset,
+                        eccentricity,
+                        size: (() => { const q = Math.random(); return q < 0.5 ? 1 : q < 0.85 ? 2 : 3; })(),
+                        baseOpacity: 0.35 + Math.random() * 0.5,
+                        // Subtle twinkle independent of orbit
+                        twinkleSpeed: 0.3 + Math.random() * 0.8,
+                        twinklePhase: Math.random() * Math.PI * 2
+                    };
+                });
             }
 
             function draw(time) {
                 ctx.clearRect(0, 0, w, h);
                 const t = time / 1000;
                 for (const s of stars) {
-                    const tw = reduced ? 1 : 0.55 + 0.45 * Math.sin(t * s.speed + s.phase);
-                    ctx.globalAlpha = Math.max(0, Math.min(1, s.base * tw));
+                    // Orbital motion
+                    const orbitalAngle = s.angle + t * s.speed;
+                    // Elliptical orbit with eccentricity
+                    const r = s.radius * (1 - s.eccentricity * Math.cos(orbitalAngle + s.phaseOffset));
+
+                    // Apply tilt: project 3D orbit onto 2D canvas
+                    // X axis is flat, Y axis is tilted (cos(inclination))
+                    const x = cx + r * Math.cos(orbitalAngle);
+                    const y = cy + r * Math.sin(orbitalAngle) * Math.cos(s.inclination);
+
+                    // Subtle twinkle
+                    const twinkle = reduced ? 1 : 0.65 + 0.35 * Math.sin(t * s.twinkleSpeed + s.twinklePhase);
+                    const opacity = Math.max(0, Math.min(1, s.baseOpacity * twinkle));
+
+                    // Size varies slightly with orbital distance (perspective)
+                    const perspective = 0.6 + 0.4 * (1 - s.radius / (Math.max(w, h) * 0.6));
+                    const displaySize = Math.max(0.5, s.size * perspective);
+
+                    ctx.globalAlpha = opacity;
                     ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(Math.round(s.x), Math.round(s.y), s.size, s.size);
+                    ctx.fillRect(Math.round(x), Math.round(y), displaySize, displaySize);
                 }
                 ctx.globalAlpha = 1;
             }
