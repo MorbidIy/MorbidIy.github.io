@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+*.local
+
+# IDE / Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude / AI
+.claude/
+*.log
+
+# Large assets / screenshots (keep source, ignore generated)
+assets/images/Screenshot*.png
+examples/Screenshot*.png
+
+# Environment
+.env
+.env.local
+.env.*.local
