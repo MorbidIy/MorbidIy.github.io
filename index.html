@@ -338,10 +338,61 @@
             position: absolute;
             inset: 0;
             pointer-events: none;
-            z-index: 10;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.26;
-            mix-blend-mode: overlay;
+            z-index: 20; /* above the card content, below nothing */
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            /* Grayscale fractal noise, tiled so grain size is identical on every card */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 5 0 0 0 -3'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px 256px;
+            background-repeat: repeat;
+            opacity: 0.06;
+            mix-blend-mode: normal;
+        }
+
+        /* ---- Feature card hover (NestJS "bounce cards" behaviour) ---- */
+        /* Hovered card straightens; siblings slide aside. Transform is driven by initCardsBounce(). */
+        #cards-carousel ._card_111p4_1 {
+            transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+            will-change: transform;
+            cursor: default;
+        }
+        /* Diagonal light streak from the top edge, fades in on hover */
+        #cards-carousel ._cardContainer_111p4_4 > div.absolute.inset-0 {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            background: linear-gradient(
+                126deg,
+                transparent 36%,
+                rgba(255, 255, 255, 0.05) 41%,
+                rgba(255, 255, 255, 0.14) 46%,
+                rgba(255, 255, 255, 0.05) 52%,
+                transparent 58%
+            );
+            -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 60%);
+            mask-image: linear-gradient(to bottom, #000 0%, transparent 60%);
+        }
+        #cards-carousel ._card_111p4_1:hover ._cardContainer_111p4_4 > div.absolute.inset-0,
+        #cards-carousel ._card_111p4_1._hovered_111p4_4 ._cardContainer_111p4_4 > div.absolute.inset-0 {
+            opacity: 1;
+        }
+
+        /* ---- Scroll-revealed statement over a starfield ---- */
+        .statement-panel {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            will-change: opacity, transform, filter;
+        }
+        .statement-inner {
+            width: min(1280px, calc(100% - 64px)); /* 1280px container, left-aligned lines */
+        }
+        .statement-word {
+            display: inline-block;
+            color: rgb(55, 53, 53); /* grey start state, sampled from nestjs.com */
         }
     </style>
 </head>
@@ -651,7 +702,7 @@
     <!-- Feature Cards Carousel -->
     <div class="lg:pt-50 lg:pb-40 pt-40 pb-16 flex justify-center overflow-hidden">
         <div class="relative flex items-center justify-center custom-bounceCards" style="width:100%;height:350px" id="cards-carousel">
-            <div class="_card_111p4_1 card-0 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(3deg) translate(-600px, -20px)">
+            <div class="_card_111p4_1 card-0 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(0deg) translate(-600px)">
                 <div class="flex w-full h-full card-reveal" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;">
                     <div class="_borderGlow_111p4_60 flex w-full h-full rounded-[24px]">
                         <div class="_cardContainer_111p4_4 flex relative w-full h-full rounded-[24px] overflow-hidden">
@@ -665,7 +716,7 @@
                     </div>
                 </div>
             </div>
-            <div class="_card_111p4_1 card-1 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(0deg) translate(-400px)">
+            <div class="_card_111p4_1 card-1 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(5deg) translate(-400px)">
                 <div class="flex w-full h-full card-reveal" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;">
                     <div class="_borderGlow_111p4_60 flex w-full h-full rounded-[24px]">
                         <div class="_cardContainer_111p4_4 flex relative w-full h-full rounded-[24px] overflow-hidden">
@@ -679,7 +730,7 @@
                     </div>
                 </div>
             </div>
-            <div class="_card_111p4_1 card-2 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(5deg) translate(-200px)">
+            <div class="_card_111p4_1 card-2 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(-5deg) translate(-200px)">
                 <div class="flex w-full h-full card-reveal" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;">
                     <div class="_borderGlow_111p4_60 flex w-full h-full rounded-[24px]">
                         <div class="_cardContainer_111p4_4 flex relative w-full h-full rounded-[24px] overflow-hidden">
@@ -693,7 +744,7 @@
                     </div>
                 </div>
             </div>
-            <div class="_card_111p4_1 card-3 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(-5deg)">
+            <div class="_card_111p4_1 card-3 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(0deg)">
                 <div class="flex w-full h-full card-reveal" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;">
                     <div class="_borderGlow_111p4_60 flex w-full h-full rounded-[24px]">
                         <div class="_cardContainer_111p4_4 flex relative w-full h-full rounded-[24px] overflow-hidden">
@@ -707,7 +758,7 @@
                     </div>
                 </div>
             </div>
-            <div class="_card_111p4_1 card-4 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(0deg) translate(200px)">
+            <div class="_card_111p4_1 card-4 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(-5deg) translate(200px)">
                 <div class="flex w-full h-full card-reveal" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;">
                     <div class="_borderGlow_111p4_60 flex w-full h-full rounded-[24px]">
                         <div class="_cardContainer_111p4_4 flex relative w-full h-full rounded-[24px] overflow-hidden">
@@ -721,7 +772,7 @@
                     </div>
                 </div>
             </div>
-            <div class="_card_111p4_1 card-5 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(-5deg) translate(400px)">
+            <div class="_card_111p4_1 card-5 absolute w-[350px] aspect-square overflow-hidden text-center" style="transform:rotate(5deg) translate(400px)">
                 <div class="flex w-full h-full card-reveal" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;">
                     <div class="_borderGlow_111p4_60 flex w-full h-full rounded-[24px]">
                         <div class="_cardContainer_111p4_4 flex relative w-full h-full rounded-[24px] overflow-hidden">
@@ -757,69 +808,22 @@
         </div>
     </div>
 
-    <!-- Animated Text Section -->
-    <div class="will-change-transform h-[300vh] relative">
-        <div class="w-full h-[100vh] sticky top-[0] overflow-hidden">
-            <div class="w-full h-full relative overflow-hidden">
-                <div class="relative flex flex-col items-center justify-center h-full w-full">
-                    <div class="absolute inset-0 top-0 left-0 right-0 bottom-0 pointer-events-none">
-                        <div class="relative w-full h-full undefined"></div>
+    <!-- Animated Text Section: 3000px-tall scroll-revealed statement over a twinkling starfield.
+         Scroll progress drives it: each statement lights up word by word, grey -> white (initStatementReveal). -->
+    <div id="statement-section" class="relative" style="height: 3000px;">
+        <div class="sticky top-0 w-full h-[100vh] overflow-hidden">
+            <canvas id="starfield" class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
+            <div class="relative w-full h-full">
+                <div class="statement-panel">
+                    <div class="statement-inner text-center">
+                        <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium">When there&apos;s no yarn, we build our own toys</h4>
+                        <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium">NestJS ecosystem &mdash; First-class TypeScript, Built-in DI, Modular architecture</h4>
                     </div>
-                    <section class="px-20">
-                        <div class="invisible" style="opacity: 1;">
-                            <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium text-center flex">When there&apos;s no yarn</h4>
-                        </div>
-                        <div class="invisible" style="opacity: 1;">
-                            <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium text-center flex">we build our own toys</h4>
-                        </div>
-                        <div class="invisible" style="opacity: 1;">
-                            <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium text-center flex">NestJS ecosystem</h4>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-        <div class="w-full h-[100vh] sticky top-[0] overflow-hidden">
-            <div class="w-full h-full relative overflow-hidden">
-                <div class="relative flex flex-col items-center justify-center h-full w-full">
-                    <div class="absolute inset-0 top-0 left-0 right-0 bottom-0 pointer-events-none">
-                        <div class="relative w-full h-full undefined"></div>
-                    </div>
-                    <section class="px-20">
-                        <div class="invisible" style="opacity: 1;">
-                            <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium text-center flex">First-class TypeScript</h4>
-                        </div>
-                        <div class="invisible" style="opacity: 1;">
-                            <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium text-center flex">Built-in DI container</h4>
-                        </div>
-                        <div class="invisible" style="opacity: 1;">
-                            <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium text-center flex">Modular architecture</h4>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-        <div class="w-full h-[100vh] sticky top-[0] overflow-hidden">
-            <div class="w-full h-full relative overflow-hidden">
-                <div class="relative flex flex-col items-center justify-center h-full w-full">
-                    <div class="absolute inset-0 top-0 left-0 right-0 bottom-0 pointer-events-none">
-                        <div class="relative w-full h-full undefined"></div>
-                    </div>
-                    <section class="px-20">
-                        <div class="invisible" style="opacity: 1;">
-                            <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium text-center flex">Open source & free</h4>
-                        </div>
-                        <div class="invisible" style="opacity: 1;">
-                            <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium text-center flex">MIT licensed</h4>
-                        </div>
-                        <div class="invisible" style="opacity: 1;">
-                            <h4 class="xl:text-9xl lg:text-8xl md:text-7xl sm:text-[4rem] sm:leading-[1.15] text-4xl leading-[1.15] font-medium text-center flex">Community driven</h4>
-                        </div>
-                    </section>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Ecosystem / Products Section -->
     <div class="flex justify-center pt-40 pb-20">
@@ -1584,6 +1588,210 @@
             observer.observe(carousel);
         }
 
+        // Feature cards: hovered card straightens (rotate -> 0deg), siblings are pushed
+        // 160px away from it (keeping their tilt), staggered by distance. Matches nestjs.com.
+        function initCardsBounce(pushDistance = 160, stagger = 0.05) {
+            const carousel = document.getElementById('cards-carousel');
+            if (!carousel) return;
+            const cards = Array.from(carousel.querySelectorAll('._card_111p4_1'));
+
+            // Parse each card's base "rotate(Xdeg) translate(Ypx[, Zpx])" from its inline style
+            const base = cards.map(card => {
+                const t = card.style.transform || '';
+                const rot = /rotate\((-?[\d.]+)deg\)/.exec(t);
+                const tr = /translate\((-?[\d.]+)px(?:\s*,\s*(-?[\d.]+)px)?\)/.exec(t);
+                return {
+                    rot: rot ? parseFloat(rot[1]) : 0,
+                    x: tr ? parseFloat(tr[1]) : 0,
+                    y: tr && tr[2] ? parseFloat(tr[2]) : 0
+                };
+            });
+            const make = (b, rot, dx) =>
+                `rotate(${rot}deg) translate(${b.x + dx}px${b.y ? ', ' + b.y + 'px' : ''})`;
+
+            let lastHovered = 0;
+
+            function push(hovered) {
+                lastHovered = hovered;
+                cards.forEach((card, i) => {
+                    const dist = Math.abs(hovered - i);
+                    card.style.transitionDelay = i === hovered ? '0s' : (dist * stagger) + 's';
+                    if (i === hovered) {
+                        card.style.transform = make(base[i], 0, 0);
+                    } else {
+                        card.style.transform = make(base[i], base[i].rot, i < hovered ? -pushDistance : pushDistance);
+                    }
+                });
+            }
+
+            function reset() {
+                cards.forEach((card, i) => {
+                    const dist = Math.abs(lastHovered - i);
+                    card.style.transitionDelay = (dist * stagger) + 's';
+                    card.style.transform = make(base[i], base[i].rot, 0);
+                });
+            }
+
+            cards.forEach((card, i) => {
+                card.addEventListener('mouseenter', () => push(i));
+                card.addEventListener('mouseleave', reset);
+            });
+        }
+
+        // Scroll-revealed statement: the section is 3000px tall with a sticky 100vh stage.
+        // Scroll progress is split evenly between the statement panels. Within a panel the
+        // words light up one after another, grey -> white; panels crossfade into each other.
+        function initStatementReveal() {
+            const section = document.getElementById('statement-section');
+            if (!section) return;
+            const panels = Array.from(section.querySelectorAll('.statement-panel'));
+            if (!panels.length) return;
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const GREY = [55, 53, 53];
+            const WHITE = [255, 255, 255];
+            const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+            const smooth = t => t * t * (3 - 2 * t);
+
+            // Wrap every word of every line in a span so each one can light up on its own
+            const panelWords = panels.map(panel => {
+                const words = [];
+                panel.querySelectorAll('h4').forEach(h4 => {
+                    const parts = h4.textContent.trim().split(/\s+/);
+                    h4.textContent = '';
+                    parts.forEach((w, i) => {
+                        const span = document.createElement('span');
+                        span.className = 'statement-word';
+                        span.textContent = w;
+                        h4.appendChild(span);
+                        words.push(span);
+                        if (i < parts.length - 1) h4.appendChild(document.createTextNode(' '));
+                    });
+                });
+                return words;
+            });
+
+            let ticking = false;
+            function update() {
+                ticking = false;
+                const rect = section.getBoundingClientRect();
+                const range = Math.max(1, rect.height - window.innerHeight);
+                const progress = clamp(-rect.top / range);
+                const n = panels.length;
+                const seg = progress * n;
+
+                panels.forEach((panel, i) => {
+                    const t = clamp(seg - i); // 0..1 inside this panel's slice of the scroll
+                    // First statement is already there (grey) when the section pins;
+                    // later ones fade in over the first 12% of their slice.
+                    const enter = i === 0 ? 1 : smooth(clamp(t / 0.12));
+                    // Every statement but the last fades out over the final 12% of its slice.
+                    const exit = i === n - 1 ? 0 : smooth(clamp((t - 0.88) / 0.12));
+                    const vis = enter * (1 - exit);
+
+                    if (vis <= 0.001) {
+                        panel.style.visibility = 'hidden';
+                        return;
+                    }
+                    panel.style.visibility = 'visible';
+                    panel.style.opacity = String(vis);
+                    if (reduced) {
+                        panel.style.transform = 'none';
+                        panel.style.filter = 'none';
+                    } else {
+                        const shift = (1 - enter) * 30 - exit * 30;
+                        const blur = ((1 - enter) + exit) * 10;
+                        panel.style.transform = `translateY(${shift.toFixed(1)}px)`;
+                        panel.style.filter = blur > 0.05 ? `blur(${blur.toFixed(1)}px)` : 'none';
+                    }
+
+                    // Words light up in order between 10% and 80% of the slice
+                    const words = panelWords[i];
+                    const wt = reduced ? 1 : clamp((t - 0.1) / 0.7);
+                    const trail = 2.5; // how many words are mid-transition at once
+                    const focus = wt * (words.length + trail);
+                    words.forEach((word, idx) => {
+                        const lp = reduced ? 1 : smooth(clamp((focus - idx) / trail));
+                        const r = Math.round(GREY[0] + (WHITE[0] - GREY[0]) * lp);
+                        const g = Math.round(GREY[1] + (WHITE[1] - GREY[1]) * lp);
+                        const b = Math.round(GREY[2] + (WHITE[2] - GREY[2]) * lp);
+                        word.style.color = `rgb(${r}, ${g}, ${b})`;
+                    });
+                });
+            }
+
+            function onScroll() {
+                if (!ticking) {
+                    ticking = true;
+                    requestAnimationFrame(update);
+                }
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll);
+            update();
+        }
+
+        // Twinkling starfield drawn on a canvas behind the statement.
+        function initStarfield() {
+            const canvas = document.getElementById('starfield');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const DENSITY = 7e-5; // stars per CSS pixel (~120 on a 1900x900 viewport)
+
+            let stars = [];
+            let w = 0, h = 0, dpr = 1;
+            let visible = false;
+            let raf = 0;
+
+            function build() {
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                w = canvas.clientWidth;
+                h = canvas.clientHeight;
+                if (!w || !h) return;
+                canvas.width = Math.round(w * dpr);
+                canvas.height = Math.round(h * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const count = Math.round(w * h * DENSITY);
+                stars = Array.from({ length: count }, () => ({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    size: (() => { const q = Math.random(); return q < 0.45 ? 1 : q < 0.85 ? 2 : 3; })(), // crisp pixel stars, like nestjs.com
+                    base: 0.55 + Math.random() * 0.45,
+                    speed: 0.4 + Math.random() * 1.4,             // twinkle rate (rad/s)
+                    phase: Math.random() * Math.PI * 2
+                }));
+            }
+
+            function draw(time) {
+                ctx.clearRect(0, 0, w, h);
+                const t = time / 1000;
+                for (const s of stars) {
+                    const tw = reduced ? 1 : 0.55 + 0.45 * Math.sin(t * s.speed + s.phase);
+                    ctx.globalAlpha = Math.max(0, Math.min(1, s.base * tw));
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(Math.round(s.x), Math.round(s.y), s.size, s.size);
+                }
+                ctx.globalAlpha = 1;
+            }
+
+            function loop(time) {
+                draw(time);
+                raf = visible && !reduced ? requestAnimationFrame(loop) : 0;
+            }
+
+            build();
+            draw(0);
+            window.addEventListener('resize', () => { build(); draw(performance.now()); });
+
+            // Only animate while the section is on screen
+            new IntersectionObserver(entries => {
+                visible = entries[0].isIntersecting;
+                if (visible && !raf && !reduced) raf = requestAnimationFrame(loop);
+            }, { threshold: 0 }).observe(canvas);
+        }
+
         // Generic hover fade effect for sibling elements
         function initHoverFade(selector, fadeOpacity = 0.6, enterDuration = 0.4, leaveDuration = 0.5) {
             const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1619,6 +1827,9 @@
             initStatCountUp();
             initScrollAnimations();
             initCardsReveal();
+            initCardsBounce();
+            initStatementReveal();
+            initStarfield();
             initHoverFade('#logo-wall .logo-item', 0.6, 0.4, 0.5);
             initHoverFade('#desktop-nav .menu-item', 0.6, 0.3, 0.4);
         });
